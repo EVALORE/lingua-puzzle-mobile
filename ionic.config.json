@@ -1,0 +1,7 @@
+{
+  "name": "lingua-puzzle-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
