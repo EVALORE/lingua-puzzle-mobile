@@ -8,7 +8,9 @@ export type Puzzles = Array<{
   puzzle_id: number;
 }>
 
-export type Phrases = Array<{
+export type Phrases = Array<Phrase>
+
+export interface Phrase {
   order_in_puzzle: number;
   phrase_id: string;
   puzzle_id: number;
@@ -17,4 +19,4 @@ export type Phrases = Array<{
   sentence_text_ro: string;
   target_term: string;
   target_translation: string;
-}>
+}

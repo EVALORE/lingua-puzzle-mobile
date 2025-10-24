@@ -1,15 +1,19 @@
-import {computed, effect, Injectable, signal, WritableSignal} from '@angular/core';
+import {computed, effect, inject, Injectable, signal, WritableSignal} from '@angular/core';
 import {Tile} from "./types/tile";
 import {Phrase} from "./types/game-data";
 import {PositionStatus} from "./types/position-status";
 import {getBoardWidthPx, TILE_HEIGHT} from "./consts/ui-layout";
 import {arrayShuffle} from "src/app/shared/utils/array-shuffle";
+import {HttpData} from "../../core/api/http-data";
+import {toSignal} from "@angular/core/rxjs-interop";
 
 const DEFAULT_PHRASE_INDEX = 0;
 
 @Injectable()
 export class PuzzleLogic {
-  public readonly puzzlePhrases = computed<Phrase[]>(() => this.gameDataLoader.puzzles() ?? []);
+   private readonly http = inject(HttpData);
+
+  public readonly puzzlePhrases = toSignal(this.http.getPhrases(1), {initialValue: []});
   public readonly phrase = computed(() => this.puzzlePhrases()[this.phraseIndex()]);
   public readonly phraseIndex = signal<number>(DEFAULT_PHRASE_INDEX);
   public readonly solvedTiles = signal<Tile[][]>([]);

@@ -10,4 +10,23 @@
       <ion-title size="large">puzzle</ion-title>
     </ion-toolbar>
   </ion-header>
+    <ion-card class="board" [style]="boardStyles()">
+      @for (solved of solvedTiles(); track $index) {
+        <app-tiles [tiles]="solved" [solved]="true"/>
+      }
+      <app-tiles [tiles]="placedTiles()" (cardClick)="moveCardToAvailable($event)"/>
+    </ion-card>
+
+    <app-tiles [tiles]="availableTiles()" (cardClick)="moveCardToPlaced($event)"/>
+
+    @if (showButtons()) {
+      <div class="puzzle-actions">
+        @if (areTilesPlacedCorrectly()) {
+          <ion-button (click)="continue()">continue</ion-button>
+        } @else {
+          <ion-button (click)="autocompleteSentenceSolving()">auto complete</ion-button>
+          <ion-button (click)="checkCards()">check</ion-button>
+        }
+      </div>
+    }
 </ion-content>

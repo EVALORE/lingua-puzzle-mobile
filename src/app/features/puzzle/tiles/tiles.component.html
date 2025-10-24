@@ -1,3 +1,10 @@
-<p>
-  tiles works!
-</p>
+@for (tile of tiles(); track tile.initialIndex) {
+  <ion-card
+    [style]="getTileStyles(tile)"
+    [class]="getTileClassNames(tile)"
+    [class.tile]="true"
+    (click)="onTileClick($index)"
+  >
+    {{ tile.word }}
+  </ion-card>
+}

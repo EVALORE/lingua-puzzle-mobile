@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Levels, Puzzles} from "./api-data";
+import {Levels, Phrases, Puzzles} from "./api-data";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class HttpData {
     // this.getImage(1).subscribe(console.log);
     // this.getPhrases(1).subscribe(console.log);
     // this.getAudio(1).subscribe(console.log);
-    this.getPuzzleProgress(2, 1).subscribe(console.log);
+    // this.getPuzzleProgress(2, 1).subscribe(console.log);
     // this.createUser("alex", "alex@example.com", "secret123").subscribe({
     //   next: response => console.log("User created:", response),
     //   error: error => console.error("Error creating user:", error)
@@ -57,7 +57,7 @@ export class HttpData {
 
 
   public getPhrases(puzzleId: number) {
-    return this.http.get<Puzzles>(`http://89.28.78.237:8000/puzzles/${puzzleId}/phrases`, {
+    return this.http.get<Phrases>(`http://89.28.78.237:8000/puzzles/${puzzleId}/phrases`, {
       headers: {
         'Content-Type': 'application/json',
       }
