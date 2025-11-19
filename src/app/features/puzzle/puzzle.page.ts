@@ -5,6 +5,9 @@ import {IonButton, IonCard, IonContent, IonHeader, IonTitle, IonToolbar} from '@
 import {getBoardWidthPx, TILE_HEIGHT} from "./consts/ui-layout";
 import {PuzzleLogic} from "./puzzle-logic";
 import {TilesComponent} from "./tiles/tiles.component";
+import {from} from "rxjs";
+import {CapacitorHttp} from "@capacitor/core";
+import {Levels} from "../../core/api/api-models";
 
 @Component({
   selector: 'app-puzzle',

@@ -4,16 +4,24 @@ import {Phrase} from "./types/game-data";
 import {PositionStatus} from "./types/position-status";
 import {getBoardWidthPx, TILE_HEIGHT} from "./consts/ui-layout";
 import {arrayShuffle} from "src/app/shared/utils/array-shuffle";
-import {HttpData} from "../../core/api/http-data";
-import {toSignal} from "@angular/core/rxjs-interop";
+import {Api} from "../../core/api/api";
+import {toObservable, toSignal} from "@angular/core/rxjs-interop";
+import {Puzzles} from "../../core/stores/puzzles";
+import {switchMap} from "rxjs";
 
 const DEFAULT_PHRASE_INDEX = 0;
 
 @Injectable()
 export class PuzzleLogic {
-   private readonly http = inject(HttpData);
+  private readonly http = inject(Api);
+  private readonly puzzles = inject(Puzzles);
 
-  public readonly puzzlePhrases = toSignal(this.http.getPhrases(1), {initialValue: []});
+  public readonly puzzlePhrases = toSignal(
+    toObservable(this.puzzles.selectedPuzzleId).pipe(
+      switchMap(puzzleId => puzzleId !== null ? this.http.getPhrases(puzzleId) : [])
+    ),{initialValue: []}
+  );
+
   public readonly phrase = computed(() => this.puzzlePhrases()[this.phraseIndex()]);
   public readonly phraseIndex = signal<number>(DEFAULT_PHRASE_INDEX);
   public readonly solvedTiles = signal<Tile[][]>([]);
@@ -33,8 +41,7 @@ export class PuzzleLogic {
       if (this.puzzlePhrases().length === 0) {
         return;
       }
-      const {sentence_text_eng} = this.phrase();
-      const tiles = this.createTilesFromSentence(sentence_text_eng, this.phraseIndex());
+      const tiles = this.createTilesFromSentence(this.phrase().sentenceTextEng, this.phraseIndex());
       this.placedTiles.set(
         tiles.map((tile) => ({
           ...tile,
